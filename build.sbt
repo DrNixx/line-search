@@ -8,7 +8,8 @@ version := "1.8"
 
 scalaVersion := "2.13.1"
 
-lazy val root = project.in(file("."))
+lazy val root = project
+  .in(file("."))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayFilters)
 
@@ -27,9 +28,11 @@ scalacOptions ++= Seq(
   "-Xlint:_",
   "-Ywarn-macros:after",
   "-Ywarn-unused:_",
-  "-Xfatal-warnings",
-  "-Xmaxerrs", "12",
-  "-Xmaxwarns", "12",
+//  "-Xfatal-warnings",
+  "-Xmaxerrs",
+  "12",
+  "-Xmaxwarns",
+  "12",
   "-P:silencer:pathFilters=target/scala-2.13/routes"
 )
 
@@ -39,9 +42,11 @@ libraryDependencies ++= Seq(
   "com.github.ornicar" %% "scalalib" % "6.7",
   "com.sksamuel.elastic4s" %% "elastic4s-core" % elastic4sVersion,
   "com.sksamuel.elastic4s" %% "elastic4s-http" % elastic4sVersion,
-  "com.typesafe.play" %% "play-json" % "2.8.1",
+  "com.sksamuel.elastic4s" %% "elastic4s-jackson" % elastic4sVersion,
   "com.typesafe.play" %% "play-json-joda" % "2.8.1",
-  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full),
+  compilerPlugin(
+    "com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full
+  ),
   "com.github.ghik" % "silencer-lib" % "1.6.0" % Provided cross CrossVersion.full,
   ws,
   specs2 % Test
