@@ -1,14 +1,10 @@
-import com.typesafe.sbt.SbtScalariform.autoImport.scalariformFormat
-import com.typesafe.sbt.SbtScalariform.ScalariformKeys
-import scalariform.formatter.preferences._
-
 name := """lila-search"""
 
-version := "1.8"
+version := "2.0"
 
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.3"
 
-lazy val root = project.in(file("."))
+lazy val `lila-search` = project.in(file("."))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayFilters)
 
@@ -19,30 +15,50 @@ publishArtifact in (Compile, packageDoc) := false
 publishArtifact in (Compile, packageSrc) := false
 
 scalacOptions ++= Seq(
-  "-language:implicitConversions",
-  "-language:postfixOps",
-  "-feature",
-  "-unchecked",
-  "-deprecation",
-  "-Xlint:_",
-  "-Ywarn-macros:after",
-  "-Ywarn-unused:_",
-  "-Xfatal-warnings",
-  "-Xmaxerrs", "12",
-  "-Xmaxwarns", "12",
-  "-P:silencer:pathFilters=target/scala-2.13/routes"
+    "-explaintypes",
+    "-feature",
+    "-language:higherKinds",
+    "-language:implicitConversions",
+    "-language:postfixOps",
+    "-Ymacro-annotations",
+    // Warnings as errors!
+    // "-Xfatal-warnings",
+    // Linting options
+    "-unchecked",
+    "-Xcheckinit",
+    "-Xlint:adapted-args",
+    "-Xlint:constant",
+    "-Xlint:delayedinit-select",
+    "-Xlint:deprecation",
+    "-Xlint:inaccessible",
+    "-Xlint:infer-any",
+    "-Xlint:missing-interpolator",
+    "-Xlint:nullary-unit",
+    "-Xlint:option-implicit",
+    "-Xlint:package-object-classes",
+    "-Xlint:poly-implicit-overload",
+    "-Xlint:private-shadow",
+    "-Xlint:stars-align",
+    "-Xlint:type-parameter-shadow",
+    "-Wdead-code",
+    "-Wextra-implicit",
+    "-Wnumeric-widen",
+    "-Wunused:imports",
+    "-Wunused:locals",
+    "-Wunused:patvars",
+    "-Wunused:privates",
+    "-Wunused:implicits",
+    "-Wunused:params",
+    /* "-Wvalue-discard" */
 )
 
-val elastic4sVersion = "6.7.3"
+val elastic4sVersion = "7.9.1"
 
 libraryDependencies ++= Seq(
-  "com.github.ornicar" %% "scalalib" % "6.7",
-  "com.sksamuel.elastic4s" %% "elastic4s-core" % elastic4sVersion,
-  "com.sksamuel.elastic4s" %% "elastic4s-http" % elastic4sVersion,
-  "com.typesafe.play" %% "play-json" % "2.8.1",
-  "com.typesafe.play" %% "play-json-joda" % "2.8.1",
-  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full),
-  "com.github.ghik" % "silencer-lib" % "1.6.0" % Provided cross CrossVersion.full,
+  "com.github.ornicar" %% "scalalib" % "6.8",
+  "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion,
+  "com.typesafe.play" %% "play-json" % "2.9.1",
+  "com.typesafe.play" %% "play-json-joda" % "2.9.1",
   ws,
   specs2 % Test
 )
@@ -52,10 +68,3 @@ resolvers += "lila-maven" at "https://raw.githubusercontent.com/ornicar/lila-mav
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
-
-Seq(
-  ScalariformKeys.preferences := ScalariformKeys.preferences.value
-    .setPreference(DanglingCloseParenthesis, Force)
-    .setPreference(DoubleIndentConstructorArguments, true),
-  excludeFilter in scalariformFormat := "*Routes*"
-)
